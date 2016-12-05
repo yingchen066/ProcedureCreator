@@ -114,11 +114,7 @@ public class ProcedureCreatorFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				tips.setText(" ");
 				errorTips.setText("  ");
-				if(textInsertSql.getText()==null||textInsertSql.getText().trim().equals("")){
-					errorTips.setText("请先生成sql语句！");
-					return;
-				}
-				if(FileUtil.save(textInsertSql.getText(), Constant.DIR+"/updateSQLs/dlsys/date/add"+Parser.funcitionName.substring(0, 1).toUpperCase()+Parser.funcitionName.substring(1)+".sql",false)&&
+				if(FileUtil.save(textInsertSql.getText(), Constant.DIR+"/updateSQLs/dlsys/data/add"+Parser.funcitionName.substring(0, 1).toUpperCase()+Parser.funcitionName.substring(1)+".sql",false)&&
 				FileUtil.save(textProcedure.getText(), Constant.DIR+"/updateSQLs/dlmis/procedure/"+Parser.procedureName.substring(6)+(Parser.isFunction?".fnc":".prc"),false)){
 					tips.setText("updateSQL文件已自动生成");
 				}else{
@@ -183,7 +179,6 @@ public class ProcedureCreatorFrame extends JFrame {
 		textInsertSql = new JTextArea();
 		textInsertSql.setLineWrap(true);
 		scrollPane_1.setViewportView(textInsertSql);
-		setSize(800, 500);
 		setExtendedState(Frame.MAXIMIZED_BOTH);
 	}
 
