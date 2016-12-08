@@ -1,5 +1,5 @@
 1.软件运行环境
-安装jre1.7及以上的操作系统
+安装jre1.6及以上的操作系统
 
 2.打开方式
 Windows：双击运行ProcedureCreator.bat，或在命令行下进入软件所在目录运行java -jar ProcedureCreator.jar
