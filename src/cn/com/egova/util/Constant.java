@@ -2,7 +2,7 @@ package cn.com.egova.util;
 
 public class Constant {
 	public static String DB_URL="";
-	public static String DB_PORT="1536";
+	public static String DB_PORT="1521";
 	public static String DB_NAME="";
 	public static String DB_USERNAME="";
 	public static String DB_PASSWORD="";

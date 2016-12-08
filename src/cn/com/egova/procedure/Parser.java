@@ -25,7 +25,7 @@ public class Parser {
 			funcitionName = procedureName.substring(10, 11).toLowerCase() + procedureName.substring(11);
 			String paramStr = sql.substring(sql.indexOf("(") + 1, sql.indexOf(")"));
 			String params[] = paramStr.split(",");
-			ArrayList<Param> list = new ArrayList<>();
+			ArrayList<Param> list = new ArrayList<Param>();
 			if (headerArr[3].equalsIgnoreCase("function")) {
 				list.add(new Param("funcResult", 1, Param.TYPE_INTEGER));
 				isFunction=true;
@@ -93,40 +93,33 @@ public class Parser {
 			String procedureparamType = "";
 			int procedureparamTypeID = 0;
 			Param param = list.get(i);
-			switch (param.getType().toLowerCase()) {
-			case Param.TYPE_VARCHAR:
-			case Param.TYPE_VARCHAR2:
+			String type = param.getType().toLowerCase();
+			if(type.equals(Param.TYPE_VARCHAR)||type.equals(Param.TYPE_VARCHAR2)){
 				functionparamType = "String";
 				functionparamTypeID = 1;
 				procedureparamType = "Varchar";
 				procedureparamTypeID = 12;
-
-				break;
-			case Param.TYPE_INTEGER:
+			}else if(type.equals(Param.TYPE_INTEGER)){
+		
 				functionparamType = "Int";
 				functionparamTypeID = 0;
 				procedureparamType = "Integer";
 				procedureparamTypeID = 4;
-
-				break;
-			case Param.TYPE_CURSOR:
+			}else if(type.equals(Param.TYPE_CURSOR)){
+	
 				procedureparamType = "Cursor";
 				procedureparamTypeID = -10;
-				break;
-			case Param.TYPE_NUMBER:
+			}else if(type.equals(Param.TYPE_NUMBER)){
+		
 				functionparamType = "Double";
 				functionparamTypeID = 4;
 				procedureparamType = "Number";
 				procedureparamTypeID = 2;
-				break;
-			case Param.TYPE_FLOAT:
+			}else if(type.equals(Param.TYPE_FLOAT)){
 				functionparamType = "Float";
 				functionparamTypeID = 2;
 				procedureparamType = "Float";
 				procedureparamTypeID = 6;
-				break;
-			default:
-				break;
 			}
 			procedureparamInsertSql
 					.append("insert into dlsys.TCMIPROCEDUREPARAM (PARAMID, PROCEDUREID, PARAMNAME, ORDERINPRO, DIRECTION, SQLTYPE, REMARK, PRODUCTID) values ("

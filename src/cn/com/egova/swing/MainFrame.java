@@ -37,7 +37,7 @@ public class MainFrame {
 			char[] ch=new char[1024];
 			fr.read(ch);
 			String config=new String(ch).trim();
-			HashMap<String,String> map=new HashMap<>();
+			HashMap<String,String> map=new HashMap<String,String>();
 			String[] split = config.split(";");
 			for(String str : split){
 				String[] split2 = str.split(":");

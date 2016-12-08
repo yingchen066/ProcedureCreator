@@ -14,7 +14,7 @@ public class OracleDAO implements DAO{
     String user;   
     String password;
     public OracleDAO(){
-    	this.url="jdbc:oracle:thin:@"+Constant.DB_URL+":"+1521+":"+Constant.DB_NAME;
+    	this.url="jdbc:oracle:thin:@"+Constant.DB_URL+":"+Constant.DB_PORT+":"+Constant.DB_NAME;
     	this.user=Constant.DB_USERNAME;
     	this.password=Constant.DB_PASSWORD;
     }
