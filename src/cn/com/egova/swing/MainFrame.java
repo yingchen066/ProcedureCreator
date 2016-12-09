@@ -11,44 +11,43 @@ import java.util.HashMap;
 import cn.com.egova.util.Constant;
 
 public class MainFrame {
-	public static ProcedureCreatorFrame mainFrame=null;
-	public static boolean isShoewMainFrame=false;
-	
+	public static ProcedureCreatorFrame mainFrame = null;
+	public static boolean isShoewMainFrame = false;
 
 	public static void main(String[] args) {
-		mainFrame=new ProcedureCreatorFrame();
-		File file = new File(Constant.DIR+"/dbConfig.txt");
+		mainFrame = new ProcedureCreatorFrame();
+		File file = new File(Constant.DIR + "/dbConfig.txt");
 		if (!file.exists()) {
 			SettingFrame settingFrame = new SettingFrame();
 			settingFrame.setVisible(true);
-		}else{
+		} else {
 			initConfig(file);
-			
+
 			mainFrame.setVisible(true);
-			isShoewMainFrame=true;
+			isShoewMainFrame = true;
 		}
-		
+
 	}
 
 	public static void initConfig(File file) {
-		FileReader fr=null;
+		FileReader fr = null;
 		try {
-			fr=new FileReader(file);
-			char[] ch=new char[1024];
+			fr = new FileReader(file);
+			char[] ch = new char[1024];
 			fr.read(ch);
-			String config=new String(ch).trim();
-			HashMap<String,String> map=new HashMap<String,String>();
+			String config = new String(ch).trim();
+			HashMap<String, String> map = new HashMap<String, String>();
 			String[] split = config.split(";");
-			for(String str : split){
+			for (String str : split) {
 				String[] split2 = str.split(":");
 				map.put(split2[0].trim(), split2[1].trim());
 			}
-			Constant.DB_URL=map.get("url");
-			Constant.DB_PORT=map.get("port");
-			Constant.DB_NAME=map.get("dbname");
-			Constant.DB_USERNAME=map.get("username");
-			Constant.DB_PASSWORD=map.get("password");
-			
+			Constant.DB_URL = map.get("url");
+			Constant.DB_PORT = map.get("port");
+			Constant.DB_NAME = map.get("dbname");
+			Constant.DB_USERNAME = map.get("username");
+			Constant.DB_PASSWORD = map.get("password");
+
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -56,13 +55,13 @@ public class MainFrame {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	public static void saveConfigsToFile() {
-		FileWriter fw =null;
+		FileWriter fw = null;
 		try {
-			File file = new File(Constant.DIR+"/dbConfig.txt");
+			File file = new File(Constant.DIR + "/dbConfig.txt");
 			if (file.exists()) {
 				file.delete();
 			}
@@ -77,9 +76,9 @@ public class MainFrame {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}finally {
+		} finally {
 			try {
-				if(fw!=null){
+				if (fw != null) {
 					fw.close();
 				}
 			} catch (IOException e) {

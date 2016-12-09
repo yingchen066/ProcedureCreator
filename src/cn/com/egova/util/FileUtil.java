@@ -7,7 +7,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class FileUtil {
-	public static boolean save(String str, String pathname,boolean isAppend) {
+	public static boolean save(String str, String pathname, boolean isAppend) {
 		BufferedWriter bufferWritter = null;
 		try {
 
@@ -43,6 +43,5 @@ public class FileUtil {
 		}
 		file.createNewFile();
 	}
-
 
 }

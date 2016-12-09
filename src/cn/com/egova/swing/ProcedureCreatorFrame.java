@@ -84,27 +84,27 @@ public class ProcedureCreatorFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				tips.setText(" ");
 				errorTips.setText("  ");
-				if(textInsertSql.getText()==null||textInsertSql.getText().trim().equals("")){
+				if (textInsertSql.getText() == null || textInsertSql.getText().trim().equals("")) {
 					errorTips.setText("请先生成sql语句！");
 					return;
 				}
-				OracleDAO dao=new OracleDAO();
+				OracleDAO dao = new OracleDAO();
 
 				tips.setText("正在插入insert语句到数据库");
-				
+
 				String string = textInsertSql.getText();
 				String[] sqls = string.split("\r\n");
-				int count=0;
-				for(String sql:sqls){
-					
-					if(sql!=null&&!"".equals(sql)){
-							sql=sql.substring(0, sql.indexOf(";"));
-						if(dao.excuteSQL(sql)){
+				int count = 0;
+				for (String sql : sqls) {
+
+					if (sql != null && !"".equals(sql)) {
+						sql = sql.substring(0, sql.indexOf(";"));
+						if (dao.excuteSQL(sql)) {
 							count++;
 						}
 					}
 				}
-				tips.setText("成功插入"+count+"条数据");
+				tips.setText("成功插入" + count + "条数据");
 			}
 		});
 
@@ -114,13 +114,19 @@ public class ProcedureCreatorFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				tips.setText(" ");
 				errorTips.setText("  ");
-				if(FileUtil.save(textInsertSql.getText(), Constant.DIR+"/updateSQLs/dlsys/data/add"+Parser.funcitionName.substring(0, 1).toUpperCase()+Parser.funcitionName.substring(1)+".sql",false)&&
-				FileUtil.save(textProcedure.getText(), Constant.DIR+"/updateSQLs/dlmis/procedure/"+Parser.procedureName.substring(6)+(Parser.isFunction?".fnc":".prc"),false)){
+				if (FileUtil.save(textInsertSql.getText(),
+						Constant.DIR + "/updateSQLs/dlsys/data/add" + Parser.funcitionName.substring(0, 1).toUpperCase()
+								+ Parser.funcitionName.substring(1) + ".sql",
+						false)
+						&& FileUtil.save(
+								textProcedure.getText(), Constant.DIR + "/updateSQLs/dlmis/procedure/"
+										+ Parser.procedureName.substring(6) + (Parser.isFunction ? ".fnc" : ".prc"),
+								false)) {
 					tips.setText("updateSQL文件已自动生成");
-				}else{
+				} else {
 					errorTips.setText("updateSQL文件生成失败！");
 				}
-				
+
 			}
 		});
 
@@ -146,7 +152,7 @@ public class ProcedureCreatorFrame extends JFrame {
 		errorTips.setHorizontalAlignment(SwingConstants.RIGHT);
 		errorTips.setForeground(Color.RED);
 		panel_2.add(errorTips);
-		
+
 		tips = new JLabel("   ");
 		panel.add(tips, BorderLayout.CENTER);
 		tips.setHorizontalAlignment(SwingConstants.CENTER);
@@ -162,8 +168,8 @@ public class ProcedureCreatorFrame extends JFrame {
 		getContentPane().add(splitPane, BorderLayout.CENTER);
 
 		JScrollPane scrollPane = new JScrollPane();
-//		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-//		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+		// scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		// scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
 		scrollPane.setToolTipText("");
 		splitPane.setLeftComponent(scrollPane);
 
@@ -172,8 +178,8 @@ public class ProcedureCreatorFrame extends JFrame {
 		scrollPane.setViewportView(textProcedure);
 
 		JScrollPane scrollPane_1 = new JScrollPane();
-//		scrollPane_1.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-//		scrollPane_1.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+		// scrollPane_1.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		// scrollPane_1.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
 		splitPane.setRightComponent(scrollPane_1);
 
 		textInsertSql = new JTextArea();
