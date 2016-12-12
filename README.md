@@ -1,22 +1,20 @@
-1.软件运行环境
+#1.软件运行环境
 安装jre1.6及以上的操作系统
 
-2.打开方式
-Windows：双击运行ProcedureCreator.bat，或在命令行下进入软件所在目录运行java -jar ProcedureCreator.jar
-打开后请勿关闭命令行窗口
-Mac/Linux:直接双击打开ProcedureCreator.jar即可，或在命令行下进入软件所在目录运行java -jar ProcedureCreator.jar
+#2.打开方式
+直接双击打开ProcedureCreator.jar即可，或在命令行下进入软件所在目录运行java -jar ProcedureCreator.jar
 
-3.设置数据库连接
+#3.设置数据库连接
 软件在第一次进入时需要设置数据库连接参数，之后可在主界面点设置按钮进行修改，数据库配置文件保存在本目录的dbConfig.txt下请勿删除
 以192.168.101.9的数据库 配置参数如下：
 数据库ip：192.168.101.9
-端口号：1536
+端口号：1521
 数据库名：stdcg
 用户名：dlsys
 密码：dlsys
 配置好数据库连接参数之后即可进入主界面
 
-4.主界面
+#4.主界面
 ①左侧框为存储过程的输入框，右侧框为insert语句的输出框
 ②将存储过程全部复制粘贴到左侧框中，然后点击“生成sql语句”按钮，即可在右侧框中看到生成的insert语句
 ③检查右侧框中的insert语句是否符合要求，可更具需要修改函数名，参数名以及描述文字
