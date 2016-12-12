@@ -18,6 +18,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JSplitPane;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+import javax.swing.WindowConstants;
 
 import cn.com.egova.dao.OracleDAO;
 import cn.com.egova.procedure.Parser;
@@ -189,6 +190,9 @@ public class ProcedureCreatorFrame extends JFrame {
 		setSize(800, 500);
 		
 		setExtendedState(Frame.MAXIMIZED_BOTH);
+		
+		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+	
 	}
 
 }

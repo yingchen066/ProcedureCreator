@@ -5,8 +5,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
+
+import javax.swing.WindowConstants;
 
 import cn.com.egova.util.Constant;
 
@@ -19,6 +20,7 @@ public class MainFrame {
 		File file = new File(Constant.DIR + "/dbConfig.txt");
 		if (!file.exists()) {
 			SettingFrame settingFrame = new SettingFrame();
+			settingFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 			settingFrame.setVisible(true);
 		} else {
 			initConfig(file);
