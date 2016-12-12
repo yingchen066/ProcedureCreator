@@ -185,6 +185,9 @@ public class ProcedureCreatorFrame extends JFrame {
 		textInsertSql = new JTextArea();
 		textInsertSql.setLineWrap(true);
 		scrollPane_1.setViewportView(textInsertSql);
+		
+		setSize(800, 500);
+		
 		setExtendedState(Frame.MAXIMIZED_BOTH);
 	}
 
