@@ -34,6 +34,7 @@ public class ProcedureCreatorFrame extends JFrame {
 	private JTextArea textProcedure;
 	private JTextArea textInsertSql;
 	private JLabel tips;
+	private JTextArea textDeleteSql;
 
 	public ProcedureCreatorFrame() {
 		getContentPane().setLayout(new BorderLayout(0, 0));
@@ -59,9 +60,10 @@ public class ProcedureCreatorFrame extends JFrame {
 					return;
 				} else {
 					try {
-						String insertSql = Parser.parseProcedure(textProcedure.getText(), false);
-						if (insertSql != null && !"".equals(insertSql)) {
-							textInsertSql.setText(insertSql);
+						boolean success = Parser.parseProcedure(textProcedure.getText(), false);
+						if (success) {
+							textInsertSql.setText(Parser.insertSql);
+							textDeleteSql.setText(Parser.deleteSql);
 							errorTips.setText(" ");
 							tips.setText("生成sql语句成功");
 							return;
@@ -106,26 +108,59 @@ public class ProcedureCreatorFrame extends JFrame {
 					}
 				}
 				tips.setText("成功插入" + count + "条数据");
+				if (count > 0) {
+					FileUtil.save(string,
+							Constant.DIR + "/updateSQLs" + Parser.createTime + "/dlsys/data/add"
+									+ Parser.funcitionName.substring(0, 1).toUpperCase()
+									+ Parser.funcitionName.substring(1) + ".sql",
+							false);
+					FileUtil.save(textDeleteSql.getText(),
+							Constant.DIR + "/updateSQLs" + Parser.createTime + "/dlsys/data/delete"
+									+ Parser.funcitionName.substring(0, 1).toUpperCase()
+									+ Parser.funcitionName.substring(1) + ".sql",
+							false);
+				}
 			}
 		});
 
-		JButton btnCreateUpdateSql = new JButton("\u751F\u6210updateSQL\u6587\u4EF6");
-		panel_1.add(btnCreateUpdateSql);
-		btnCreateUpdateSql.addActionListener(new ActionListener() {
+		JButton btnDeleteFromDatabase = new JButton("删除已插入数据");
+		panel_1.add(btnDeleteFromDatabase);
+		btnDeleteFromDatabase.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				tips.setText(" ");
 				errorTips.setText("  ");
-				if (FileUtil.save(textInsertSql.getText(),
-						Constant.DIR + "/updateSQLs/dlsys/data/add" + Parser.funcitionName.substring(0, 1).toUpperCase()
-								+ Parser.funcitionName.substring(1) + ".sql",
-						false)
-						&& FileUtil.save(
-								textProcedure.getText(), Constant.DIR + "/updateSQLs/dlmis/procedure/"
-										+ Parser.procedureName.substring(6) + (Parser.isFunction ? ".fnc" : ".prc"),
-								false)) {
-					tips.setText("updateSQL文件已自动生成");
-				} else {
-					errorTips.setText("updateSQL文件生成失败！");
+				if (textDeleteSql.getText() == null || textDeleteSql.getText().trim().equals("")) {
+					errorTips.setText("请先生成sql语句！");
+					return;
+				}
+				OracleDAO dao = new OracleDAO();
+
+				tips.setText("正在从数据库删除记录");
+
+				String string = textDeleteSql.getText();
+				String[] sqls = string.split("\r\n");
+				int count = 0;
+				for (String sql : sqls) {
+
+					if (sql != null && !"".equals(sql)) {
+						sql = sql.substring(0, sql.indexOf(";"));
+						if (dao.excuteSQL(sql)) {
+							count++;
+						}
+					}
+				}
+				tips.setText("删除成功");
+				if (count > 0) {
+					FileUtil.save(textInsertSql.getText(),
+							Constant.DIR + "/updateSQLs" + Parser.createTime + "/dlsys/data/add"
+									+ Parser.funcitionName.substring(0, 1).toUpperCase()
+									+ Parser.funcitionName.substring(1) + ".sql",
+							false);
+					FileUtil.save(string,
+							Constant.DIR + "/updateSQLs" + Parser.createTime + "/dlsys/data/delete"
+									+ Parser.funcitionName.substring(0, 1).toUpperCase()
+									+ Parser.funcitionName.substring(1) + ".sql",
+							false);
 				}
 
 			}
@@ -163,7 +198,7 @@ public class ProcedureCreatorFrame extends JFrame {
 		splitPane.addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentResized(ComponentEvent e) {
-				splitPane.setDividerLocation(0.5);
+				splitPane.setDividerLocation(0.4);
 			}
 		});
 		getContentPane().add(splitPane, BorderLayout.CENTER);
@@ -178,21 +213,34 @@ public class ProcedureCreatorFrame extends JFrame {
 		textProcedure.setLineWrap(true);
 		scrollPane.setViewportView(textProcedure);
 
+		final JSplitPane splitPane_1 = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+		splitPane_1.addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentResized(ComponentEvent e) {
+				splitPane_1.setDividerLocation(0.6);
+			}
+		});
+
+		JScrollPane scrollPane_2 = new JScrollPane();
+
 		JScrollPane scrollPane_1 = new JScrollPane();
-		// scrollPane_1.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-		// scrollPane_1.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-		splitPane.setRightComponent(scrollPane_1);
 
 		textInsertSql = new JTextArea();
 		textInsertSql.setLineWrap(true);
 		scrollPane_1.setViewportView(textInsertSql);
-		
+		splitPane.setRightComponent(splitPane_1);
+		splitPane_1.setTopComponent(scrollPane_1);
+		splitPane_1.setBottomComponent(scrollPane_2);
+
+		textDeleteSql = new JTextArea();
+		scrollPane_2.setViewportView(textDeleteSql);
+
 		setSize(800, 500);
-		
+
 		setExtendedState(Frame.MAXIMIZED_BOTH);
-		
+
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-	
+
 	}
 
 }
