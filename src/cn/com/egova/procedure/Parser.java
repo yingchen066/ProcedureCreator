@@ -73,7 +73,7 @@ public class Parser {
 	}
 
 	private static String removeBlankOfStrStart(String str) {
-		if (str.startsWith(" ") || str.startsWith("\r") || str.startsWith("\n")) {
+		if (str.startsWith(" ") || str.startsWith("\r") || str.startsWith("\n")||str.startsWith("\t")) {
 			str = str.substring(1);
 			return removeBlankOfStrStart(str);
 		}
