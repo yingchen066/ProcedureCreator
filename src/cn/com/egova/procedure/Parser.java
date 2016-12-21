@@ -27,6 +27,7 @@ public class Parser {
 		try {
 			String p = "(?<!:)--.*|\\/\\*(\\s|.)*?\\*\\/";
 			sql = sql.replaceAll(p, "");
+			sql = sql.replace("\t", "");
 			String procedureHeader = sql.substring(0, sql.indexOf("("));
 			String[] headerArr = procedureHeader.trim().split("\\s+");
 			procedureName = headerArr[4];
@@ -73,7 +74,7 @@ public class Parser {
 	}
 
 	private static String removeBlankOfStrStart(String str) {
-		if (str.startsWith(" ") || str.startsWith("\r") || str.startsWith("\n")||str.startsWith("\t")) {
+		if (str.startsWith(" ") || str.startsWith("\r") || str.startsWith("\n")) {
 			str = str.substring(1);
 			return removeBlankOfStrStart(str);
 		}
