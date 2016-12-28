@@ -15,11 +15,13 @@ public class Parser {
 	public static String funcitionName;
 	public static String modelname;
 	public static boolean isFunction = false;
+	public static String procedureSql;
 	public static String deleteSql;
 	public static String insertSql;
 	public static String createTime;
 
 	public static boolean parseProcedure(String sql, boolean isAddNewModel) throws SQLException {
+		procedureSql=sql;
 		createTime="_"+new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
 		deleteSql="";
 		insertSql="";
@@ -45,7 +47,7 @@ public class Parser {
 			} else {
 				isFunction = false;
 			}
-			FileUtil.save(sql, Constant.DIR+"/updateSQLs"+createTime+"/dlmis/procedure/"+Parser.procedureName.substring(6)+(Parser.isFunction?".fnc":".prc"),false);
+			
 			for (String str : params) {
 				Param param = initParam(str);
 				if (param != null) {
@@ -171,10 +173,13 @@ public class Parser {
 		deleteSql = functionDeleteSql.append("\r\n").append(funcmodelDeleteSql).append("\r\n")
 				.append(procedureDeleteSql).append("\r\n").append(functionparamDeleteSql).append("\r\n")
 				.append(procedureparamDeleteSql).append("\r\n").toString();
-		FileUtil.save(insertSql, Constant.DIR + "/updateSQLs"+createTime+"/dlsys/data/add"
+		
+		FileUtil.save(procedureSql, Constant.DIR+"/updateSQLs_"+procedureName.substring(6)+"/dlmis/procedure/"+procedureName.substring(6)+(Parser.isFunction?".fnc":".prc"),false);
+		
+		FileUtil.save(insertSql, Constant.DIR + "/updateSQLs_"+procedureName.substring(6)+"/dlsys/data/add"
 				+ Parser.funcitionName.substring(0, 1).toUpperCase() + Parser.funcitionName.substring(1) + ".sql",
 				false);
-		FileUtil.save(deleteSql, Constant.DIR + "/updateSQLs"+createTime+"/dlsys/data/delete"
+		FileUtil.save(deleteSql, Constant.DIR + "/updateSQLs_"+procedureName.substring(6)+"/dlsys/data/delete"
 				+ Parser.funcitionName.substring(0, 1).toUpperCase() + Parser.funcitionName.substring(1) + ".sql",
 				false);
 		return true;

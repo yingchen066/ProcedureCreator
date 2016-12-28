@@ -5,6 +5,7 @@ import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
 
+import cn.com.egova.dao.OracleDAO;
 import cn.com.egova.util.Constant;
 
 import com.jgoodies.forms.layout.FormSpecs;
@@ -16,9 +17,11 @@ import java.awt.Container;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 import javax.swing.JButton;
 import java.awt.Color;
+import javax.swing.SwingConstants;
 
 public class SettingFrame extends JFrame implements ActionListener {
 	/**
@@ -87,8 +90,9 @@ public class SettingFrame extends JFrame implements ActionListener {
 		tfPassword.setColumns(10);
 
 		lblNullHint = new JLabel("  ");
+		lblNullHint.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNullHint.setForeground(Color.RED);
-		getContentPane().add(lblNullHint, "8, 14, left, default");
+		getContentPane().add(lblNullHint, "2, 14, 7, 1, left, default");
 
 		btnOk = new JButton("\u786E\u5B9A");
 		contentPane.add(btnOk, "1, 16, 8, 1, center, default");
@@ -96,7 +100,7 @@ public class SettingFrame extends JFrame implements ActionListener {
 		int w = (Toolkit.getDefaultToolkit().getScreenSize().width - 300) / 2;
 		int h = (Toolkit.getDefaultToolkit().getScreenSize().height - 250) / 2;
 		setLocation(w, h);
-		setSize(300, 250);
+		setSize(320, 250);
 		setResizable(false);
 
 	}
@@ -109,11 +113,37 @@ public class SettingFrame extends JFrame implements ActionListener {
 		String username = tfUsername.getText().trim();
 		String password = tfPassword.getText().trim();
 		if (MainFrame.checkNull(url, port, dbName, username, password)) {
+			String temp_DB_URL=Constant.DB_URL;
+			String temp_DB_PORT=Constant.DB_PORT;
+			String temp_DB_NAME=Constant.DB_NAME;
+			String temp_DB_USERNAME=Constant.DB_USERNAME;
+			String temp_DB_PASSWORD=Constant.DB_PASSWORD;
+			String temp_JDBC_TYPE=Constant.JDBC_TYPE;
 			Constant.DB_URL = url;
 			Constant.DB_PORT = port;
 			Constant.DB_NAME = dbName;
 			Constant.DB_USERNAME = username;
 			Constant.DB_PASSWORD = password;
+			Constant.JDBC_TYPE=Constant.TYPE_SID;
+			try {
+				new OracleDAO().testConnection();
+					
+			} catch (SQLException e1) {
+				Constant.JDBC_TYPE=Constant.TYPE_SERVERNAME;
+				try {
+					new OracleDAO().testConnection();
+				} catch (SQLException e2) {
+					e1.printStackTrace();lblNullHint.setText(e1.getMessage());
+					Constant.DB_URL=temp_DB_URL;
+					Constant.DB_PORT=temp_DB_PORT;
+					Constant.DB_NAME=temp_DB_NAME;
+					Constant.DB_USERNAME=temp_DB_USERNAME;
+					Constant.DB_PASSWORD=temp_DB_PASSWORD;
+					Constant.JDBC_TYPE=temp_JDBC_TYPE;
+					return;
+				}
+				
+			}
 			MainFrame.saveConfigsToFile();
 			dispose();
 			if (!MainFrame.isShoewMainFrame) {

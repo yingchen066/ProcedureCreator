@@ -73,7 +73,7 @@ public class ProcedureCreatorFrame extends JFrame {
 							return;
 						}
 					} catch (SQLException e1) {
-						errorTips.setText("请检查数据库连接！");
+						errorTips.setText("数据库连接错误；"+e1.getMessage());
 						tips.setText(" ");
 						return;
 					}
@@ -110,12 +110,12 @@ public class ProcedureCreatorFrame extends JFrame {
 				tips.setText("成功插入" + count + "条数据");
 				if (count > 0) {
 					FileUtil.save(string,
-							Constant.DIR + "/updateSQLs" + Parser.createTime + "/dlsys/data/add"
+							Constant.DIR + "/updateSQLs_"+Parser.procedureName.substring(6)+"/dlsys/data/add"
 									+ Parser.funcitionName.substring(0, 1).toUpperCase()
 									+ Parser.funcitionName.substring(1) + ".sql",
 							false);
 					FileUtil.save(textDeleteSql.getText(),
-							Constant.DIR + "/updateSQLs" + Parser.createTime + "/dlsys/data/delete"
+							Constant.DIR + "/updateSQLs_"+Parser.procedureName.substring(6)+"/dlsys/data/delete"
 									+ Parser.funcitionName.substring(0, 1).toUpperCase()
 									+ Parser.funcitionName.substring(1) + ".sql",
 							false);

@@ -49,6 +49,7 @@ public class MainFrame {
 			Constant.DB_NAME = map.get("dbname");
 			Constant.DB_USERNAME = map.get("username");
 			Constant.DB_PASSWORD = map.get("password");
+			Constant.JDBC_TYPE = map.get("jdbc_type");
 
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -73,7 +74,9 @@ public class MainFrame {
 			fw.write("port:" + Constant.DB_PORT + ";");
 			fw.write("dbname:" + Constant.DB_NAME + ";");
 			fw.write("username:" + Constant.DB_USERNAME + ";");
-			fw.write("password:" + Constant.DB_PASSWORD);
+			fw.write("password:" + Constant.DB_PASSWORD + ";");
+			fw.write("jdbc_type:" + Constant.JDBC_TYPE);
+			
 			fw.flush();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

@@ -15,9 +15,13 @@ public class OracleDAO implements DAO {
 	String password;
 
 	public OracleDAO() {
-		this.url = "jdbc:oracle:thin:@" + Constant.DB_URL + ":" + Constant.DB_PORT + ":" + Constant.DB_NAME;
 		this.user = Constant.DB_USERNAME;
-		this.password = Constant.DB_PASSWORD;
+		this.password = Constant.DB_PASSWORD;	
+		if(Constant.JDBC_TYPE.equals(Constant.TYPE_SID)){
+			this.url = "jdbc:oracle:thin:@" + Constant.DB_URL + ":" + Constant.DB_PORT + ":" + Constant.DB_NAME;
+		}else{
+			this.url = "jdbc:oracle:thin:@//" + Constant.DB_URL + ":" + Constant.DB_PORT + "/" + Constant.DB_NAME;
+		}
 	}
 
 	public int[] getInitParams() throws SQLException {
@@ -30,6 +34,33 @@ public class OracleDAO implements DAO {
 		return new int[] { getNowMaxID(sql1, "functionid") + 1, getNowMaxID(sql2, "paramid") + 1,
 				getNowMaxID(sql3, "funcmodelid") + 1, getNowMaxID(sql4, "procedureid") + 1,
 				getNowMaxID(sql5, "paramid") + 1, getNowMaxID(sql6, "modelid") + 1 };
+	}
+	
+	public boolean testConnection() throws SQLException{
+		Connection conn = null;
+		try {
+			Class.forName(driverName);
+
+			conn = DriverManager.getConnection(url, user, password);
+
+			System.out.println(conn);
+
+			return true;
+
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}finally {
+			if(conn!=null){
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 
 	private int getNowMaxID(String sql, String columName) throws SQLException {
