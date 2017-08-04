@@ -25,12 +25,12 @@ public class OracleDAO implements DAO {
 	}
 
 	public int[] getInitParams() throws SQLException {
-		String sql1 = "select functionid from dlsys.tcmifunction where rownum=1 order by functionid desc";
-		String sql2 = "select paramid from dlsys.tcmifunctionparam where rownum=1 order by paramid desc";
-		String sql3 = "select funcmodelid from dlsys.tcmifuncmodel where rownum=1 order by funcmodelid desc";
-		String sql4 = "select procedureid from dlsys.tcmiprocedure where rownum=1 order by procedureid desc";
-		String sql5 = "select paramid from dlsys.tcmiprocedureparam where rownum=1 order by paramid desc";
-		String sql6 = "select modelid from dlsys.tcmimodel where rownum=1 order by modelid desc";
+		String sql1 = "select functionid from (select functionid from dlsys.tcmifunction order by functionid desc) where rownum=1";
+		String sql2 = "select paramid from (select paramid from dlsys.tcmifunctionparam order by paramid desc) where rownum=1";
+		String sql3 = "select funcmodelid from (select funcmodelid from dlsys.tcmifuncmodel order by funcmodelid desc) where rownum=1";
+		String sql4 = "select procedureid from (select procedureid from dlsys.tcmiprocedure order by procedureid desc) where rownum=1";
+		String sql5 = "select paramid from (select paramid from dlsys.tcmiprocedureparam order by paramid desc) where rownum=1";
+		String sql6 = "select modelid from (select modelid from dlsys.tcmimodel order by modelid desc) where rownum=1";
 		return new int[] { getNowMaxID(sql1, "functionid") + 1, getNowMaxID(sql2, "paramid") + 1,
 				getNowMaxID(sql3, "funcmodelid") + 1, getNowMaxID(sql4, "procedureid") + 1,
 				getNowMaxID(sql5, "paramid") + 1, getNowMaxID(sql6, "modelid") + 1 };
